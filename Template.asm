@@ -23,7 +23,7 @@ weight_kg					Real4 ?
 quit_result					DWORD ?
 omnitrope_result			Real4 ?
 norditropin_result			REAL4 ?
-zomacton_result
+zomacton_result				REAL4 ?
 OMNITROPE					REAL4 0.04
 NORDITROPIN					REAL4 0.016
 ZOMACTON					real4 0.0125
@@ -60,6 +60,13 @@ main PROC
 	fstp	norditropin_result					; Store the result in omnitrope_result
 	call	CrLf
 
+	; Calculate Norditropin dosing
+	fld		weight_kg							; Load the weight into the FPU stack
+	fld		ZOMACTON							; Load the OMNITROPE constant into the FPU stack
+	fmul										; Multiply the weight by OMNITROPE
+	fstp	zomacton_result					; Store the result in omnitrope_result
+	call	CrLf
+
 	; Display Omnitrope dosing
 	mov		EDX, OFFSET omnitrope_string
 	call	WriteString
@@ -74,6 +81,16 @@ main PROC
 	mov		EDX, OFFSET norditropin_string
 	call	WriteString
 	fld		norditropin_result
+	call	WriteFloat
+	mov		EDX, OFFSET	mg_string
+	call	WriteString
+	call	CrLf
+	call	CrLf
+
+	; Display Omnitrope dosing
+	mov		EDX, OFFSET zomacton_string
+	call	WriteString
+	fld		zomacton_result
 	call	WriteFloat
 	mov		EDX, OFFSET	mg_string
 	call	WriteString
