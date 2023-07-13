@@ -15,13 +15,19 @@ intro_1						BYTE "Welcome to Pharmacy Dosing Calculator! Here we will display t
 prompt_1					BYTE "Please enter the weight of the patient in kg! ",0
 goodbye						BYTE "Thanks for using the program, goodbye!",0
 end_user					BYTE "If you wish to continue please enter 1! Else choose 0 to quit!!! ",0
-omnitrope_string			BYTE "The dosing for Omnitrope is: ",0
+omnitrope_string			BYTE "The maximum weekly dosing for Omnitrope is: ",0
 mg_string					BYTE " mg",0
-Norditropin_string			BYTE "The dosing for Omnitrope is: ",0
+norditropin_string			BYTE "The maximum daily dosing for Norditropin is: ",0
+zomacton_string				BYTE "The maximum daily dosing for Zomacton is: ",0
 weight_kg					Real4 ?
 quit_result					DWORD ?
 omnitrope_result			Real4 ?
+norditropin_result			REAL4 ?
+zomacton_result
 OMNITROPE					REAL4 0.04
+NORDITROPIN					REAL4 0.016
+ZOMACTON					real4 0.0125
+
 
 .code
 main PROC
@@ -47,10 +53,27 @@ main PROC
 	fstp	omnitrope_result					; Store the result in omnitrope_result
 	call	CrLf
 
+	; Calculate Norditropin dosing
+	fld		weight_kg							; Load the weight into the FPU stack
+	fld		NORDITROPIN							; Load the OMNITROPE constant into the FPU stack
+	fmul										; Multiply the weight by OMNITROPE
+	fstp	norditropin_result					; Store the result in omnitrope_result
+	call	CrLf
+
 	; Display Omnitrope dosing
 	mov		EDX, OFFSET omnitrope_string
 	call	WriteString
 	fld		omnitrope_result
+	call	WriteFloat
+	mov		EDX, OFFSET	mg_string
+	call	WriteString
+	call	CrLf
+	call	CrLf
+
+	; Display Omnitrope dosing
+	mov		EDX, OFFSET norditropin_string
+	call	WriteString
+	fld		norditropin_result
 	call	WriteFloat
 	mov		EDX, OFFSET	mg_string
 	call	WriteString
