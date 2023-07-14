@@ -16,6 +16,10 @@ prompt_1					BYTE "Please enter the weight of the patient in kg! ",0
 goodbye						BYTE "Thanks for using the program, goodbye!",0
 end_user					BYTE "If you wish to continue please enter 1! Else choose 0 to quit!!! ",0
 omnitrope_string			BYTE "The maximum weekly dosing for Omnitrope is: ",0
+tylenol_string				BYTE "The dosing for tylenol 160mg/5ml solution is ",0
+tylenol_string_2			BYTE " every 4-6 hours ",0
+ibuprofen_string			BYTE "The dosing for ibuprofen 100mg/5ml solution is  ",0
+ibuprofen_string_2			BYTE " every 6-8 hours",0
 mg_string					BYTE " mg",0
 norditropin_string			BYTE "The maximum daily dosing for Norditropin is: ",0
 zomacton_string				BYTE "The maximum daily dosing for Zomacton is: ",0
@@ -24,9 +28,14 @@ quit_result					DWORD ?
 omnitrope_result			Real4 ?
 norditropin_result			REAL4 ?
 zomacton_result				REAL4 ?
+tylenol_result				REAL4 ?
+ibuprofen_result            REAL4 ?
 OMNITROPE					REAL4 0.04
 NORDITROPIN					REAL4 0.016
-ZOMACTON					real4 0.0125
+ZOMACTON					REAL4 0.0125
+TYLENOL						REAL4 15.00
+IBUPROFEN					REAL4 10.00
+
 
 
 .code
@@ -51,20 +60,33 @@ main PROC
 	fld		OMNITROPE							; Load the OMNITROPE constant into the FPU stack
 	fmul										; Multiply the weight by OMNITROPE
 	fstp	omnitrope_result					; Store the result in omnitrope_result
-	call	CrLf
 
 	; Calculate Norditropin dosing
 	fld		weight_kg							; Load the weight into the FPU stack
-	fld		NORDITROPIN							; Load the OMNITROPE constant into the FPU stack
-	fmul										; Multiply the weight by OMNITROPE
-	fstp	norditropin_result					; Store the result in omnitrope_result
+	fld		NORDITROPIN							; Load the NORDITROPIN constant into the FPU stack
+	fmul										; Multiply the weight by NORDITROPIN
+	fstp	norditropin_result					; Store the result in norditropin_result
 	call	CrLf
 
-	; Calculate Norditropin dosing
+	; Calculate Zomacton dosing
 	fld		weight_kg							; Load the weight into the FPU stack
-	fld		ZOMACTON							; Load the OMNITROPE constant into the FPU stack
-	fmul										; Multiply the weight by OMNITROPE
-	fstp	zomacton_result					; Store the result in omnitrope_result
+	fld		ZOMACTON							; Load the ZOMACTON constant into the FPU stack
+	fmul										; Multiply the weight by ZOMACTON
+	fstp	zomacton_result					    ; Store the result in zomacton_result	
+	call	CrLf
+
+	; Calculate Tylenol dosing
+	fld		weight_kg							; Load the weight into the FPU stack
+	fld		TYLENOL							    ; Load the TYLENOL constant into the FPU stack
+	fmul										; Multiply the weight by TYLENOL
+	fstp	tylenol_result					    ; Store the result in tylenol_result
+	call	CrLf
+
+	; Calculate Ibuprofen dosing
+	fld		weight_kg							; Load the weight into the FPU stack
+	fld		IBUPROFEN							; Load the IBUPROFEN constant into the FPU stack
+	fmul										; Multiply the weight by IBUPROFEN	
+	fstp	ibuprofen_result					; Store the result in ibuprofen_result
 	call	CrLf
 
 	; Display Omnitrope dosing
@@ -77,7 +99,7 @@ main PROC
 	call	CrLf
 	call	CrLf
 
-	; Display Omnitrope dosing
+	; Display Norditropin dosing
 	mov		EDX, OFFSET norditropin_string
 	call	WriteString
 	fld		norditropin_result
@@ -87,12 +109,36 @@ main PROC
 	call	CrLf
 	call	CrLf
 
-	; Display Omnitrope dosing
+	; Display Zomacton dosing
 	mov		EDX, OFFSET zomacton_string
 	call	WriteString
 	fld		zomacton_result
 	call	WriteFloat
 	mov		EDX, OFFSET	mg_string
+	call	WriteString
+	call	CrLf
+	call	CrLf
+
+	; Display Tylenol dosing
+	mov		EDX, OFFSET tylenol_string
+	call	WriteString
+	fld		tylenol_result
+	call	WriteFloat
+	mov		EDX, OFFSET	mg_string
+	call	WriteString
+	mov		EDX, OFFSET tylenol_string_2
+	call	WriteString
+	call	CrLf
+	call	CrLf
+
+	; Display Ibuprofen dosing
+	mov		EDX, OFFSET ibuprofen_string
+	call	WriteString
+	fld		ibuprofen_result
+	call	WriteFloat
+	mov		EDX, OFFSET	mg_string
+	call	WriteString
+	mov		EDX, OFFSET ibuprofen_string_2
 	call	WriteString
 	call	CrLf
 	call	CrLf
