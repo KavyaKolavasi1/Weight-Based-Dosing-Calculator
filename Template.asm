@@ -66,28 +66,24 @@ main PROC
 	fld		NORDITROPIN							; Load the NORDITROPIN constant into the FPU stack
 	fmul										; Multiply the weight by NORDITROPIN
 	fstp	norditropin_result					; Store the result in norditropin_result
-	call	CrLf
 
 	; Calculate Zomacton dosing
 	fld		weight_kg							; Load the weight into the FPU stack
 	fld		ZOMACTON							; Load the ZOMACTON constant into the FPU stack
 	fmul										; Multiply the weight by ZOMACTON
 	fstp	zomacton_result					    ; Store the result in zomacton_result	
-	call	CrLf
 
 	; Calculate Tylenol dosing
 	fld		weight_kg							; Load the weight into the FPU stack
 	fld		TYLENOL							    ; Load the TYLENOL constant into the FPU stack
 	fmul										; Multiply the weight by TYLENOL
 	fstp	tylenol_result					    ; Store the result in tylenol_result
-	call	CrLf
 
 	; Calculate Ibuprofen dosing
 	fld		weight_kg							; Load the weight into the FPU stack
 	fld		IBUPROFEN							; Load the IBUPROFEN constant into the FPU stack
 	fmul										; Multiply the weight by IBUPROFEN	
 	fstp	ibuprofen_result					; Store the result in ibuprofen_result
-	call	CrLf
 
 	; Display Omnitrope dosing
 	mov		EDX, OFFSET omnitrope_string
