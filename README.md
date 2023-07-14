@@ -1,10 +1,10 @@
 # Weight-Based-Dosing-Calculator
 
 ### What Does the Calculator Do?
-This text based program utilizes assembly programming to calculate the dosing of medications that are based on weight. In pharmacy it is very common to dose medications based on weight and on the pharmacist side, we have to deligently check these doses to make sure that the patient will no overdose or underdose so there is no fluctuation in laboratory values.
+This text based program utilizes assembly programming to calculate the dosing of medications that are based on weight. In pharmacy it is very common to dose medications based on patient weight and as pharmacists, we have to deligently check these doses to make sure that the patient will not overdose or underdose causing a fluctuation in laboratory values.
 
 ### Why These Drugs?
-There are also drugs that contain what we call having a "Narrow Therapeutic Index". This means that small fluctuations in doses can have severe results for the patient, and therefore vital to dose correctly. The following program contains medications commonly used in my current place of work as well as some narrow therapeutic index drugs that pharmacists can utilize in their day to day to enhance patient safety.
+There are also drugs that contain what we call a "Narrow Therapeutic Index". This means that small fluctuations in doses can have severe results for the patient, and therefore vital to dose correctly. The following program contains medications commonly used in my current place of work as well as some narrow therapeutic index drugs that pharmacists can utilize in their day to day to enhance patient safety.
 
 ### What Do the Numbers Mean?
 This Weight-Based-Calculator utilizes MASM x 86 Assembler to create a text-based program where the user is able to quickly input the weight in kg. The results displayed will show the correct dosage and frequency of the medication. 
