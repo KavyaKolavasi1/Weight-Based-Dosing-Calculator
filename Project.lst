@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.29.30151.0	    07/13/23 19:10:18
+Microsoft (R) Macro Assembler Version 14.29.30151.0	    07/13/23 19:15:38
 #Program Template     (template.asm			     Page 1 - 1
 
 
@@ -167,6 +167,8 @@ Microsoft (R) Macro Assembler Version 14.29.30151.0	    07/13/23 19:10:18
  0000000A  E8 00000000 E		call	CrLf
  0000000F  E8 00000000 E		call	CrLf
 
+ 00000014			_continue_loop:
+
 					; Prompt the user to enter the weight
  00000014  BA 0000006D R		mov		EDX, OFFSET prompt_1
  00000019  E8 00000000 E		call	WriteString
@@ -259,15 +261,32 @@ Microsoft (R) Macro Assembler Version 14.29.30151.0	    07/13/23 19:10:18
  00000169  E8 00000000 E		call	CrLf
  0000016E  E8 00000000 E		call	CrLf
 
+					; continue loop or not
+ 00000173  BA 000000C3 R		mov		EDX, OFFSET end_user
+ 00000178  E8 00000000 E		call	WriteString
+ 0000017D  E8 00000000 E		call	CrLf
+ 00000182  E8 00000000 E		call	ReadDec
+ 00000187  A3 00000215 R		mov		quit_result, EAX															
+ 0000018C  83 F8 01			cmp		EAX, 1																		
+ 0000018F  0F 84 FFFFFE7F		je		_continue_loop																
+ 00000195  EB 00			jmp		_end_Program
+
+ 00000197			_end_Program:
+
+					; Display a closing message
+ 00000197  BA 0000009C R		mov		EDX,OFFSET goodbye
+ 0000019C  E8 00000000 E		call	WriteString
+ 000001A1  E8 00000000 E		call	CrLf	
+
 					Invoke ExitProcess,0					; exit to operating system
- 00000173  6A 00	   *	    push   +000000000h
- 00000175  E8 00000000 E   *	    call   ExitProcess
- 0000017A			main ENDP
+ 000001A6  6A 00	   *	    push   +000000000h
+ 000001A8  E8 00000000 E   *	    call   ExitProcess
+ 000001AD			main ENDP
 
 				; (insert additional procedures here)
 
 				END main
-Microsoft (R) Macro Assembler Version 14.29.30151.0	    07/13/23 19:10:18
+Microsoft (R) Macro Assembler Version 14.29.30151.0	    07/13/23 19:15:38
 #Program Template     (template.asm			     Symbols 2 - 1
 
 
@@ -362,7 +381,7 @@ Segments and Groups:
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
 _DATA  . . . . . . . . . . . . .	32 Bit	 00000241 Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 0000017A Para	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 000001AD Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -469,7 +488,9 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000017A Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 000001AD Public STDCALL
+  _continue_loop . . . . . . . .	L Near	 00000014 _TEXT	
+  _end_Program . . . . . . . . .	L Near	 00000197 _TEXT	
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C

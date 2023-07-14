@@ -47,6 +47,8 @@ main PROC
 	call	CrLf
 	call	CrLf
 
+_continue_loop:
+
 	; Prompt the user to enter the weight
 	mov		EDX, OFFSET prompt_1
 	call	WriteString
@@ -138,6 +140,23 @@ main PROC
 	call	WriteString
 	call	CrLf
 	call	CrLf
+
+	; continue loop or not
+	mov		EDX, OFFSET end_user
+	call	WriteString
+	call	CrLf
+	call	ReadDec
+	mov		quit_result, EAX															
+	cmp		EAX, 1																		
+	je		_continue_loop																
+	jmp		_end_Program
+
+_end_Program:
+
+	; Display a closing message
+	mov		EDX,OFFSET goodbye
+	call	WriteString
+	call	CrLf	
 
 	Invoke ExitProcess,0					; exit to operating system
 main ENDP
