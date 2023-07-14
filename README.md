@@ -18,4 +18,5 @@ Example 2: +1.3500000E+002 mg - Here the minus sign indicates moving decimal pla
 
 The program also allows the user to loop as many times as necessary and prompts if they would like to continue.
 
-![Beige Minimalist Collage Instagram Post](https://github.com/KavyaKolavasi1/Weight-Based-Dosing-Calculator/assets/135289399/8b5d5b01-2dda-449f-8afc-46df200b1ea5)
+![Beige Minimalist Collage Instagram Post](https://github.com/KavyaKolavasi1/Weight-Based-Dosing-Calculator/assets/135289399/aa7679c8-f0b2-4a57-8fec-a6cdb638d00a)
+
