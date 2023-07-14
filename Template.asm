@@ -20,9 +20,11 @@ tylenol_string				BYTE "The dosing for tylenol 160mg/5ml solution is ",0
 tylenol_string_2			BYTE " every 4-6 hours ",0
 ibuprofen_string			BYTE "The dosing for ibuprofen 100mg/5ml solution is  ",0
 ibuprofen_string_2			BYTE " every 6-8 hours",0
-mg_string					BYTE " mg",0
+levothyroxine_string		BYTE "The daily dosing for levothyroxine is ",0
 norditropin_string			BYTE "The maximum daily dosing for Norditropin is: ",0
 zomacton_string				BYTE "The maximum daily dosing for Zomacton is: ",0
+mg_string					BYTE " mg",0
+mcg_string					BYTE " mcg",0
 weight_kg					Real4 ?
 quit_result					DWORD ?
 omnitrope_result			Real4 ?
@@ -30,11 +32,13 @@ norditropin_result			REAL4 ?
 zomacton_result				REAL4 ?
 tylenol_result				REAL4 ?
 ibuprofen_result            REAL4 ?
+levothyroxine_result		REAL4 ?
 OMNITROPE					REAL4 0.04
 NORDITROPIN					REAL4 0.016
 ZOMACTON					REAL4 0.0125
 TYLENOL						REAL4 15.00
 IBUPROFEN					REAL4 10.00
+LEVOTHYROXINE				REAL4 1.6
 
 
 
@@ -87,6 +91,12 @@ _continue_loop:
 	fmul										; Multiply the weight by IBUPROFEN	
 	fstp	ibuprofen_result					; Store the result in ibuprofen_result
 
+	; Calculate Levothyroxine dosing
+	fld		weight_kg							; Load the weight into the FPU stack
+	fld		LEVOTHYROXINE						; Load the LEVOTHYROXINE constant into the FPU stack
+	fmul										; Multiply the weight by LEVOTHYROXINE	
+	fstp	levothyroxine_result				; Store the result in levothyroxine_result
+
 	; Display Omnitrope dosing
 	mov		EDX, OFFSET omnitrope_string
 	call	WriteString
@@ -137,6 +147,16 @@ _continue_loop:
 	mov		EDX, OFFSET	mg_string
 	call	WriteString
 	mov		EDX, OFFSET ibuprofen_string_2
+	call	WriteString
+	call	CrLf
+	call	CrLf
+
+	; Display levothyroxine dosing
+	mov		EDX, OFFSET levothyroxine_string
+	call	WriteString
+	fld		levothyroxine_result
+	call	WriteFloat
+	mov		EDX, OFFSET	mcg_string
 	call	WriteString
 	call	CrLf
 	call	CrLf

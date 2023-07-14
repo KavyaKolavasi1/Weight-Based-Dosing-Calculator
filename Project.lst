@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.29.30151.0	    07/13/23 19:15:38
+Microsoft (R) Macro Assembler Version 14.29.30151.0	    07/13/23 19:35:20
 #Program Template     (template.asm			     Page 1 - 1
 
 
@@ -123,8 +123,15 @@ Microsoft (R) Macro Assembler Version 14.29.30151.0	    07/13/23 19:15:38
 	   79 20 36 2D 38
 	   20 68 6F 75 72
 	   73 00
- 000001B4 20 6D 67 00		mg_string					BYTE " mg",0
- 000001B8 54 68 65 20 6D	norditropin_string			BYTE "The maximum daily dosing for Norditropin is: ",0
+ 000001B4 54 68 65 20 64	levothyroxine_string		BYTE "The daily dosing for levothyroxine is ",0
+	   61 69 6C 79 20
+	   64 6F 73 69 6E
+	   67 20 66 6F 72
+	   20 6C 65 76 6F
+	   74 68 79 72 6F
+	   78 69 6E 65 20
+	   69 73 20 00
+ 000001DB 54 68 65 20 6D	norditropin_string			BYTE "The maximum daily dosing for Norditropin is: ",0
 	   61 78 69 6D 75
 	   6D 20 64 61 69
 	   6C 79 20 64 6F
@@ -134,7 +141,7 @@ Microsoft (R) Macro Assembler Version 14.29.30151.0	    07/13/23 19:15:38
 	   72 6F 70 69 6E
 	   20 69 73 3A 20
 	   00
- 000001E6 54 68 65 20 6D	zomacton_string				BYTE "The maximum daily dosing for Zomacton is: ",0
+ 00000209 54 68 65 20 6D	zomacton_string				BYTE "The maximum daily dosing for Zomacton is: ",0
 	   61 78 69 6D 75
 	   6D 20 64 61 69
 	   6C 79 20 64 6F
@@ -143,18 +150,22 @@ Microsoft (R) Macro Assembler Version 14.29.30151.0	    07/13/23 19:15:38
 	   6F 6D 61 63 74
 	   6F 6E 20 69 73
 	   3A 20 00
- 00000211 00000000		weight_kg					Real4 ?
- 00000215 00000000		quit_result					DWORD ?
- 00000219 00000000		omnitrope_result			Real4 ?
- 0000021D 00000000		norditropin_result			REAL4 ?
- 00000221 00000000		zomacton_result				REAL4 ?
- 00000225 00000000		tylenol_result				REAL4 ?
- 00000229 00000000		ibuprofen_result            REAL4 ?
- 0000022D 3D23D70A		OMNITROPE					REAL4 0.04
- 00000231 3C83126F		NORDITROPIN					REAL4 0.016
- 00000235 3C4CCCCD		ZOMACTON					REAL4 0.0125
- 00000239 41700000		TYLENOL						REAL4 15.00
- 0000023D 41200000		IBUPROFEN					REAL4 10.00
+ 00000234 20 6D 67 00		mg_string					BYTE " mg",0
+ 00000238 20 6D 63 67 00	mcg_string					BYTE " mcg",0
+ 0000023D 00000000		weight_kg					Real4 ?
+ 00000241 00000000		quit_result					DWORD ?
+ 00000245 00000000		omnitrope_result			Real4 ?
+ 00000249 00000000		norditropin_result			REAL4 ?
+ 0000024D 00000000		zomacton_result				REAL4 ?
+ 00000251 00000000		tylenol_result				REAL4 ?
+ 00000255 00000000		ibuprofen_result            REAL4 ?
+ 00000259 00000000		levothyroxine_result		REAL4 ?
+ 0000025D 3D23D70A		OMNITROPE					REAL4 0.04
+ 00000261 3C83126F		NORDITROPIN					REAL4 0.016
+ 00000265 3C4CCCCD		ZOMACTON					REAL4 0.0125
+ 00000269 41700000		TYLENOL						REAL4 15.00
+ 0000026D 41200000		IBUPROFEN					REAL4 10.00
+ 00000271 3FCCCCCD		LEVOTHYROXINE				REAL4 1.6
 
 
 
@@ -173,120 +184,136 @@ Microsoft (R) Macro Assembler Version 14.29.30151.0	    07/13/23 19:15:38
  00000014  BA 0000006D R		mov		EDX, OFFSET prompt_1
  00000019  E8 00000000 E		call	WriteString
  0000001E  E8 00000000 E		call	ReadFloat
- 00000023  D9 1D 00000211 R		fstp	weight_kg							; Store the weight in weight_kg
+ 00000023  D9 1D 0000023D R		fstp	weight_kg							; Store the weight in weight_kg
  00000029  E8 00000000 E		call	CrLf
 
 
 					; Calculate omnitrope dosing
- 0000002E  D9 05 00000211 R		fld		weight_kg							; Load the weight into the FPU stack
- 00000034  D9 05 0000022D R		fld		OMNITROPE							; Load the OMNITROPE constant into the FPU stack
+ 0000002E  D9 05 0000023D R		fld		weight_kg							; Load the weight into the FPU stack
+ 00000034  D9 05 0000025D R		fld		OMNITROPE							; Load the OMNITROPE constant into the FPU stack
  0000003A  DE C9			fmul										; Multiply the weight by OMNITROPE
- 0000003C  D9 1D 00000219 R		fstp	omnitrope_result					; Store the result in omnitrope_result
+ 0000003C  D9 1D 00000245 R		fstp	omnitrope_result					; Store the result in omnitrope_result
 
 					; Calculate Norditropin dosing
- 00000042  D9 05 00000211 R		fld		weight_kg							; Load the weight into the FPU stack
- 00000048  D9 05 00000231 R		fld		NORDITROPIN							; Load the NORDITROPIN constant into the FPU stack
+ 00000042  D9 05 0000023D R		fld		weight_kg							; Load the weight into the FPU stack
+ 00000048  D9 05 00000261 R		fld		NORDITROPIN							; Load the NORDITROPIN constant into the FPU stack
  0000004E  DE C9			fmul										; Multiply the weight by NORDITROPIN
- 00000050  D9 1D 0000021D R		fstp	norditropin_result					; Store the result in norditropin_result
+ 00000050  D9 1D 00000249 R		fstp	norditropin_result					; Store the result in norditropin_result
 
 					; Calculate Zomacton dosing
- 00000056  D9 05 00000211 R		fld		weight_kg							; Load the weight into the FPU stack
- 0000005C  D9 05 00000235 R		fld		ZOMACTON							; Load the ZOMACTON constant into the FPU stack
+ 00000056  D9 05 0000023D R		fld		weight_kg							; Load the weight into the FPU stack
+ 0000005C  D9 05 00000265 R		fld		ZOMACTON							; Load the ZOMACTON constant into the FPU stack
  00000062  DE C9			fmul										; Multiply the weight by ZOMACTON
- 00000064  D9 1D 00000221 R		fstp	zomacton_result					    ; Store the result in zomacton_result	
+ 00000064  D9 1D 0000024D R		fstp	zomacton_result					    ; Store the result in zomacton_result	
 
 					; Calculate Tylenol dosing
- 0000006A  D9 05 00000211 R		fld		weight_kg							; Load the weight into the FPU stack
- 00000070  D9 05 00000239 R		fld		TYLENOL							    ; Load the TYLENOL constant into the FPU stack
+ 0000006A  D9 05 0000023D R		fld		weight_kg							; Load the weight into the FPU stack
+ 00000070  D9 05 00000269 R		fld		TYLENOL							    ; Load the TYLENOL constant into the FPU stack
  00000076  DE C9			fmul										; Multiply the weight by TYLENOL
- 00000078  D9 1D 00000225 R		fstp	tylenol_result					    ; Store the result in tylenol_result
+ 00000078  D9 1D 00000251 R		fstp	tylenol_result					    ; Store the result in tylenol_result
 
 					; Calculate Ibuprofen dosing
- 0000007E  D9 05 00000211 R		fld		weight_kg							; Load the weight into the FPU stack
- 00000084  D9 05 0000023D R		fld		IBUPROFEN							; Load the IBUPROFEN constant into the FPU stack
+ 0000007E  D9 05 0000023D R		fld		weight_kg							; Load the weight into the FPU stack
+ 00000084  D9 05 0000026D R		fld		IBUPROFEN							; Load the IBUPROFEN constant into the FPU stack
  0000008A  DE C9			fmul										; Multiply the weight by IBUPROFEN	
- 0000008C  D9 1D 00000229 R		fstp	ibuprofen_result					; Store the result in ibuprofen_result
+ 0000008C  D9 1D 00000255 R		fstp	ibuprofen_result					; Store the result in ibuprofen_result
+
+					; Calculate Levothyroxine dosing
+ 00000092  D9 05 0000023D R		fld		weight_kg							; Load the weight into the FPU stack
+ 00000098  D9 05 00000271 R		fld		LEVOTHYROXINE						; Load the LEVOTHYROXINE constant into the FPU stack
+ 0000009E  DE C9			fmul										; Multiply the weight by LEVOTHYROXINE	
+ 000000A0  D9 1D 00000259 R		fstp	levothyroxine_result				; Store the result in levothyroxine_result
 
 					; Display Omnitrope dosing
- 00000092  BA 00000105 R		mov		EDX, OFFSET omnitrope_string
- 00000097  E8 00000000 E		call	WriteString
- 0000009C  D9 05 00000219 R		fld		omnitrope_result
- 000000A2  E8 00000000 E		call	WriteFloat
- 000000A7  BA 000001B4 R		mov		EDX, OFFSET	mg_string
- 000000AC  E8 00000000 E		call	WriteString
- 000000B1  E8 00000000 E		call	CrLf
- 000000B6  E8 00000000 E		call	CrLf
+ 000000A6  BA 00000105 R		mov		EDX, OFFSET omnitrope_string
+ 000000AB  E8 00000000 E		call	WriteString
+ 000000B0  D9 05 00000245 R		fld		omnitrope_result
+ 000000B6  E8 00000000 E		call	WriteFloat
+ 000000BB  BA 00000234 R		mov		EDX, OFFSET	mg_string
+ 000000C0  E8 00000000 E		call	WriteString
+ 000000C5  E8 00000000 E		call	CrLf
+ 000000CA  E8 00000000 E		call	CrLf
 
 					; Display Norditropin dosing
- 000000BB  BA 000001B8 R		mov		EDX, OFFSET norditropin_string
- 000000C0  E8 00000000 E		call	WriteString
- 000000C5  D9 05 0000021D R		fld		norditropin_result
- 000000CB  E8 00000000 E		call	WriteFloat
- 000000D0  BA 000001B4 R		mov		EDX, OFFSET	mg_string
- 000000D5  E8 00000000 E		call	WriteString
- 000000DA  E8 00000000 E		call	CrLf
- 000000DF  E8 00000000 E		call	CrLf
+ 000000CF  BA 000001DB R		mov		EDX, OFFSET norditropin_string
+ 000000D4  E8 00000000 E		call	WriteString
+ 000000D9  D9 05 00000249 R		fld		norditropin_result
+ 000000DF  E8 00000000 E		call	WriteFloat
+ 000000E4  BA 00000234 R		mov		EDX, OFFSET	mg_string
+ 000000E9  E8 00000000 E		call	WriteString
+ 000000EE  E8 00000000 E		call	CrLf
+ 000000F3  E8 00000000 E		call	CrLf
 
 					; Display Zomacton dosing
- 000000E4  BA 000001E6 R		mov		EDX, OFFSET zomacton_string
- 000000E9  E8 00000000 E		call	WriteString
- 000000EE  D9 05 00000221 R		fld		zomacton_result
- 000000F4  E8 00000000 E		call	WriteFloat
- 000000F9  BA 000001B4 R		mov		EDX, OFFSET	mg_string
- 000000FE  E8 00000000 E		call	WriteString
- 00000103  E8 00000000 E		call	CrLf
- 00000108  E8 00000000 E		call	CrLf
+ 000000F8  BA 00000209 R		mov		EDX, OFFSET zomacton_string
+ 000000FD  E8 00000000 E		call	WriteString
+ 00000102  D9 05 0000024D R		fld		zomacton_result
+ 00000108  E8 00000000 E		call	WriteFloat
+ 0000010D  BA 00000234 R		mov		EDX, OFFSET	mg_string
+ 00000112  E8 00000000 E		call	WriteString
+ 00000117  E8 00000000 E		call	CrLf
+ 0000011C  E8 00000000 E		call	CrLf
 
 					; Display Tylenol dosing
- 0000010D  BA 00000132 R		mov		EDX, OFFSET tylenol_string
- 00000112  E8 00000000 E		call	WriteString
- 00000117  D9 05 00000225 R		fld		tylenol_result
- 0000011D  E8 00000000 E		call	WriteFloat
- 00000122  BA 000001B4 R		mov		EDX, OFFSET	mg_string
- 00000127  E8 00000000 E		call	WriteString
- 0000012C  BA 00000160 R		mov		EDX, OFFSET tylenol_string_2
- 00000131  E8 00000000 E		call	WriteString
- 00000136  E8 00000000 E		call	CrLf
- 0000013B  E8 00000000 E		call	CrLf
+ 00000121  BA 00000132 R		mov		EDX, OFFSET tylenol_string
+ 00000126  E8 00000000 E		call	WriteString
+ 0000012B  D9 05 00000251 R		fld		tylenol_result
+ 00000131  E8 00000000 E		call	WriteFloat
+ 00000136  BA 00000234 R		mov		EDX, OFFSET	mg_string
+ 0000013B  E8 00000000 E		call	WriteString
+ 00000140  BA 00000160 R		mov		EDX, OFFSET tylenol_string_2
+ 00000145  E8 00000000 E		call	WriteString
+ 0000014A  E8 00000000 E		call	CrLf
+ 0000014F  E8 00000000 E		call	CrLf
 
 					; Display Ibuprofen dosing
- 00000140  BA 00000172 R		mov		EDX, OFFSET ibuprofen_string
- 00000145  E8 00000000 E		call	WriteString
- 0000014A  D9 05 00000229 R		fld		ibuprofen_result
- 00000150  E8 00000000 E		call	WriteFloat
- 00000155  BA 000001B4 R		mov		EDX, OFFSET	mg_string
- 0000015A  E8 00000000 E		call	WriteString
- 0000015F  BA 000001A3 R		mov		EDX, OFFSET ibuprofen_string_2
- 00000164  E8 00000000 E		call	WriteString
- 00000169  E8 00000000 E		call	CrLf
- 0000016E  E8 00000000 E		call	CrLf
-
-					; continue loop or not
- 00000173  BA 000000C3 R		mov		EDX, OFFSET end_user
+ 00000154  BA 00000172 R		mov		EDX, OFFSET ibuprofen_string
+ 00000159  E8 00000000 E		call	WriteString
+ 0000015E  D9 05 00000255 R		fld		ibuprofen_result
+ 00000164  E8 00000000 E		call	WriteFloat
+ 00000169  BA 00000234 R		mov		EDX, OFFSET	mg_string
+ 0000016E  E8 00000000 E		call	WriteString
+ 00000173  BA 000001A3 R		mov		EDX, OFFSET ibuprofen_string_2
  00000178  E8 00000000 E		call	WriteString
  0000017D  E8 00000000 E		call	CrLf
- 00000182  E8 00000000 E		call	ReadDec
- 00000187  A3 00000215 R		mov		quit_result, EAX															
- 0000018C  83 F8 01			cmp		EAX, 1																		
- 0000018F  0F 84 FFFFFE7F		je		_continue_loop																
- 00000195  EB 00			jmp		_end_Program
+ 00000182  E8 00000000 E		call	CrLf
 
- 00000197			_end_Program:
+					; Display levothyroxine dosing
+ 00000187  BA 000001B4 R		mov		EDX, OFFSET levothyroxine_string
+ 0000018C  E8 00000000 E		call	WriteString
+ 00000191  D9 05 00000259 R		fld		levothyroxine_result
+ 00000197  E8 00000000 E		call	WriteFloat
+ 0000019C  BA 00000238 R		mov		EDX, OFFSET	mcg_string
+ 000001A1  E8 00000000 E		call	WriteString
+ 000001A6  E8 00000000 E		call	CrLf
+ 000001AB  E8 00000000 E		call	CrLf
+
+					; continue loop or not
+ 000001B0  BA 000000C3 R		mov		EDX, OFFSET end_user
+ 000001B5  E8 00000000 E		call	WriteString
+ 000001BA  E8 00000000 E		call	CrLf
+ 000001BF  E8 00000000 E		call	ReadDec
+ 000001C4  A3 00000241 R		mov		quit_result, EAX															
+ 000001C9  83 F8 01			cmp		EAX, 1																		
+ 000001CC  0F 84 FFFFFE42		je		_continue_loop																
+ 000001D2  EB 00			jmp		_end_Program
+
+ 000001D4			_end_Program:
 
 					; Display a closing message
- 00000197  BA 0000009C R		mov		EDX,OFFSET goodbye
- 0000019C  E8 00000000 E		call	WriteString
- 000001A1  E8 00000000 E		call	CrLf	
+ 000001D4  BA 0000009C R		mov		EDX,OFFSET goodbye
+ 000001D9  E8 00000000 E		call	WriteString
+ 000001DE  E8 00000000 E		call	CrLf	
 
 					Invoke ExitProcess,0					; exit to operating system
- 000001A6  6A 00	   *	    push   +000000000h
- 000001A8  E8 00000000 E   *	    call   ExitProcess
- 000001AD			main ENDP
+ 000001E3  6A 00	   *	    push   +000000000h
+ 000001E5  E8 00000000 E   *	    call   ExitProcess
+ 000001EA			main ENDP
 
 				; (insert additional procedures here)
 
 				END main
-Microsoft (R) Macro Assembler Version 14.29.30151.0	    07/13/23 19:15:38
+Microsoft (R) Macro Assembler Version 14.29.30151.0	    07/13/23 19:35:20
 #Program Template     (template.asm			     Symbols 2 - 1
 
 
@@ -380,8 +407,8 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
-_DATA  . . . . . . . . . . . . .	32 Bit	 00000241 Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 000001AD Para	  Public  'CODE'	
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000275 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 000001EA Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -488,9 +515,9 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 000001AD Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 000001EA Public STDCALL
   _continue_loop . . . . . . . .	L Near	 00000014 _TEXT	
-  _end_Program . . . . . . . . .	L Near	 00000197 _TEXT	
+  _end_Program . . . . . . . . .	L Near	 000001D4 _TEXT	
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
@@ -564,7 +591,7 @@ HEAP_GROWABLE  . . . . . . . . .	Number	 00000002h
 HEAP_NO_SERIALIZE  . . . . . . .	Number	 00000001h   
 HEAP_REALLOC_IN_PLACE_ONLY . . .	Number	 00000010h   
 HEAP_ZERO_MEMORY . . . . . . . .	Number	 00000008h   
-IBUPROFEN  . . . . . . . . . . .	DWord	 0000023D _DATA	
+IBUPROFEN  . . . . . . . . . . .	DWord	 0000026D _DATA	
 IDABORT  . . . . . . . . . . . .	Number	 00000003h   
 IDCANCEL . . . . . . . . . . . .	Number	 00000002h   
 IDCLOSE  . . . . . . . . . . . .	Number	 00000008h   
@@ -583,6 +610,7 @@ KEY_EVENT  . . . . . . . . . . .	Number	 00000001h
 KEY_MASKS  . . . . . . . . . . .	Number	 0000001Fh   
 LEFT_ALT_PRESSED . . . . . . . .	Number	 00000002h   
 LEFT_CTRL_PRESSED  . . . . . . .	Number	 00000008h   
+LEVOTHYROXINE  . . . . . . . . .	DWord	 00000271 _DATA	
 MB_ABORTRETRYIGNORE  . . . . . .	Number	 00000002h   
 MB_APPLMODAL . . . . . . . . . .	Number	 00000000h   
 MB_CANCELTRYCONTINUE . . . . . .	Number	 00000006h   
@@ -610,10 +638,10 @@ MB_YESNO . . . . . . . . . . . .	Number	 00000004h
 MENU_EVENT . . . . . . . . . . .	Number	 00000008h   
 MOUSE_EVENT  . . . . . . . . . .	Number	 00000002h   
 MessageBox . . . . . . . . . . .	Text   	 MessageBoxA
-NORDITROPIN  . . . . . . . . . .	DWord	 00000231 _DATA	
+NORDITROPIN  . . . . . . . . . .	DWord	 00000261 _DATA	
 NULL . . . . . . . . . . . . . .	Number	 00000000h   
 NUMLOCK_ON . . . . . . . . . . .	Number	 00000020h   
-OMNITROPE  . . . . . . . . . . .	DWord	 0000022D _DATA	
+OMNITROPE  . . . . . . . . . . .	DWord	 0000025D _DATA	
 OPEN_ALWAYS  . . . . . . . . . .	Number	 00000004h   
 OPEN_EXISTING  . . . . . . . . .	Number	 00000003h   
 PeekConsoleInput . . . . . . . .	Text   	 PeekConsoleInputA
@@ -631,7 +659,7 @@ SetConsoleTitle  . . . . . . . .	Text   	 SetConsoleTitleA
 TAB  . . . . . . . . . . . . . .	Number	 00000009h   
 TRUE . . . . . . . . . . . . . .	Number	 00000001h   
 TRUNCATE_EXISTING  . . . . . . .	Number	 00000005h   
-TYLENOL  . . . . . . . . . . . .	DWord	 00000239 _DATA	
+TYLENOL  . . . . . . . . . . . .	DWord	 00000269 _DATA	
 VK_11  . . . . . . . . . . . . .	Number	 000000BDh   
 VK_12  . . . . . . . . . . . . .	Number	 000000BBh   
 VK_ADD . . . . . . . . . . . . .	Number	 0000006Bh   
@@ -713,7 +741,7 @@ VK_UP  . . . . . . . . . . . . .	Number	 00000026h
 WINDOW_BUFFER_SIZE_EVENT . . . .	Number	 00000004h   
 WriteConsoleOutputCharacter  . .	Text   	 WriteConsoleOutputCharacterA
 WriteConsole . . . . . . . . . .	Text   	 WriteConsoleA
-ZOMACTON . . . . . . . . . . . .	DWord	 00000235 _DATA	
+ZOMACTON . . . . . . . . . . . .	DWord	 00000265 _DATA	
 black  . . . . . . . . . . . . .	Number	 00000000h   
 blue . . . . . . . . . . . . . .	Number	 00000001h   
 brown  . . . . . . . . . . . . .	Number	 00000006h   
@@ -723,10 +751,12 @@ exit . . . . . . . . . . . . . .	Text   	 INVOKE ExitProcess,0
 goodbye  . . . . . . . . . . . .	Byte	 0000009C _DATA	
 gray . . . . . . . . . . . . . .	Number	 00000008h   
 green  . . . . . . . . . . . . .	Number	 00000002h   
-ibuprofen_result . . . . . . . .	DWord	 00000229 _DATA	
+ibuprofen_result . . . . . . . .	DWord	 00000255 _DATA	
 ibuprofen_string_2 . . . . . . .	Byte	 000001A3 _DATA	
 ibuprofen_string . . . . . . . .	Byte	 00000172 _DATA	
 intro_1  . . . . . . . . . . . .	Byte	 00000000 _DATA	
+levothyroxine_result . . . . . .	DWord	 00000259 _DATA	
+levothyroxine_string . . . . . .	Byte	 000001B4 _DATA	
 lightBlue  . . . . . . . . . . .	Number	 00000009h   
 lightCyan  . . . . . . . . . . .	Number	 0000000Bh   
 lightGray  . . . . . . . . . . .	Number	 00000007h   
@@ -734,23 +764,24 @@ lightGreen . . . . . . . . . . .	Number	 0000000Ah
 lightMagenta . . . . . . . . . .	Number	 0000000Dh   
 lightRed . . . . . . . . . . . .	Number	 0000000Ch   
 magenta  . . . . . . . . . . . .	Number	 00000005h   
-mg_string  . . . . . . . . . . .	Byte	 000001B4 _DATA	
-norditropin_result . . . . . . .	DWord	 0000021D _DATA	
-norditropin_string . . . . . . .	Byte	 000001B8 _DATA	
-omnitrope_result . . . . . . . .	DWord	 00000219 _DATA	
+mcg_string . . . . . . . . . . .	Byte	 00000238 _DATA	
+mg_string  . . . . . . . . . . .	Byte	 00000234 _DATA	
+norditropin_result . . . . . . .	DWord	 00000249 _DATA	
+norditropin_string . . . . . . .	Byte	 000001DB _DATA	
+omnitrope_result . . . . . . . .	DWord	 00000245 _DATA	
 omnitrope_string . . . . . . . .	Byte	 00000105 _DATA	
 prompt_1 . . . . . . . . . . . .	Byte	 0000006D _DATA	
-quit_result  . . . . . . . . . .	DWord	 00000215 _DATA	
+quit_result  . . . . . . . . . .	DWord	 00000241 _DATA	
 red  . . . . . . . . . . . . . .	Number	 00000004h   
-tylenol_result . . . . . . . . .	DWord	 00000225 _DATA	
+tylenol_result . . . . . . . . .	DWord	 00000251 _DATA	
 tylenol_string_2 . . . . . . . .	Byte	 00000160 _DATA	
 tylenol_string . . . . . . . . .	Byte	 00000132 _DATA	
-weight_kg  . . . . . . . . . . .	DWord	 00000211 _DATA	
+weight_kg  . . . . . . . . . . .	DWord	 0000023D _DATA	
 white  . . . . . . . . . . . . .	Number	 0000000Fh   
 wsprintf . . . . . . . . . . . .	Text   	 wsprintfA
 yellow . . . . . . . . . . . . .	Number	 0000000Eh   
-zomacton_result  . . . . . . . .	DWord	 00000221 _DATA	
-zomacton_string  . . . . . . . .	Byte	 000001E6 _DATA	
+zomacton_result  . . . . . . . .	DWord	 0000024D _DATA	
+zomacton_string  . . . . . . . .	Byte	 00000209 _DATA	
 
 	   0 Warnings
 	   0 Errors
